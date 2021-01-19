@@ -187,7 +187,7 @@ def get_strikes_or_ball(user_input_number, random_number):
 
     for number in user_input_number:
         if number in random_number:
-            if user_input_number.index(number) is random_number.index(number):
+            if user_input_number.index(number) == random_number.index(number):
                 strikes += 1
             else:
                 ball += 1
@@ -274,27 +274,33 @@ def main():
     # 위의 코드를 포함하여 자유로운 수정이 가능함
     random_number = str(get_not_duplicated_three_digit_number())
     breaker = False
-
     while breaker == False:
-        user_input = input("Input guess number : ")
+        question = "Input guess number : "
+        user_input = input(question)
         if user_input == "0":
-            break
+            breaker = True
+        elif user_input == random_number:
+            result = get_strikes_or_ball(user_input, random_number)
+            print(f"Strikes : {result[0]} , Balls : {result[1]}")
+            while True:
+                question = "You win, one more(Y/N)?"
+                user_input = input(question)
+                if user_input == "0":
+                    breaker = True
+                    break
+                elif is_yes(user_input):
+                    random_number = str(get_not_duplicated_three_digit_number())
+                    break
+                elif is_no(user_input):
+                    breaker = True
+                    break
+                else:
+                    print("Wrong Input")
         elif is_validated_number(user_input):
             result = get_strikes_or_ball(user_input, random_number)
             print(f"Strikes : {result[0]} , Balls : {result[1]}")
-            if user_input == random_number:
-                while True:
-                    user_response = input("You win, one more(Y/N)?")
-                    if is_yes(user_response):
-                        random_number = str(get_not_duplicated_three_digit_number())
-                        break
-                    elif is_no(user_response):
-                        breaker = True
-                        break
-                    else:
-                        print("Wrong input, Input again")
         else:
-            print("Wrong input, Input again")
+            print("Wrong Input, Input again")
     # ==================================
     print("Thank you for using this program")
     print("End of the Game")
